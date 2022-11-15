@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>airport</title>
+    <style>
+        h2 {
+            text-align: center;
+        }
+        table{
+            border-collapse : collapse;
+            text-align: center;
+            width: 550px;
+            height: 500px;
+            margin: 0 auto;
+        }
+    </style>
+    <script>
+        function fetchAPI(){
+            return fetch("https://api.odcloud.kr/api/15063436/v1/uddi:61eb754a-4644-4ab0-b12b-94310777a12e?page=1&perPage=42&serviceKey=data-portal-test-key")
+                .then((response) => response.json())
+                .then((data) => data);
+        }
+
+        fetchAPI()
+            .then((datas) => {
+                console.log(datas.data);
+                showDatas(datas.data);
+            });
+        
+        function showDatas(datas){
+            const tableElement = document.querySelector("#airportData");
+            tableElement.innerHTML = datas.map((data) => setThTrElement(data)).join("");
+        }
+
+        function setThTrElement(data){
+            return `<th>터미널</th>
+                    <th>주차장</th>
+                    <th>구역</th>
+                    <th>체크인카운터</th>
+                    <th>소요시간(분)</th>
+                    <th>상세시간(초)</th>
+                    <tr>
+                        <td>${data.터미널}</td>
+                        <td>${data.주차장}</td>
+                        <td>${data.구역}</td>
+                        <td>${data.체크인카운터}</td>
+                        <td>${data['소요시간(분)']}</td>
+                        <td>${data['상세시간(초)']}</td>
+                    </tr>`;
+        }
+    </script>
+</head>
+<body>
+    <h2>인천국제공항 도보 소요시간 정보</h2>
+    <table id="airportData" border="1">
+        <!-- <th>터미널</th>
+        <th>주차장</th>
+        <th>구역</th>
+        <th>체크인카운터</th>
+        <th>소요시간(분)</th>
+        <th>상세시간(초)</th>
+        <tr>
+            <td>${data.터미널}</td>
+            <td>${data.주차장}</td>
+            <td>${data.구역}</td>
+            <td>${data.체크인카운터}</td>
+            <td></td>
+            <td></td>
+        </tr> -->
+    </table>
+</body>
+</html>
